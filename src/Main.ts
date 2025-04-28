@@ -6,7 +6,7 @@ export type AvailabilityItem = { available: string; availableDate: string };
 
 async function getData() {
   const endpoint = "https://production-sfo.browserless.io/chrome/bql";
-  const token = "SBksb5n1I9ShRZ96dc1650b1166ffe6df8e6b5a4d3";
+  const token = process.env.BROWSERLESS_TOKEN;
   const proxyString = "&proxy=residential&proxySticky=true&proxyCountry=us";
   const optionsString = "&humanlike=true&blockConsentModals=true";
 
