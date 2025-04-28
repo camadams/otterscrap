@@ -1,5 +1,6 @@
 import "dotenv/config";
 import fs from "fs";
+import path from "path";
 import { createMessage, sendEmail } from "./email";
 var debug = true;
 export type AvailabilityItem = { available: string; availableDate: string };
@@ -71,13 +72,14 @@ async function main() {
   const availabilityString = availability
     .map((item) => item.available)
     .join(",");
-  const lastAvailabilityString = fs.readFileSync("lastScrap.txt", "utf-8");
+  const filePath = path.join(__dirname, "lastScrap.txt");
+  const lastAvailabilityString = fs.readFileSync(filePath, "utf-8");
   const diffIndices = findDifferenceIndices(
     availabilityString,
     lastAvailabilityString
   );
   if (diffIndices.some((index) => index > 0)) {
-    fs.writeFileSync("lastScrap.txt", availabilityString);
+    fs.writeFileSync(filePath, availabilityString);
     const message = createMessage(diffIndices, availability);
     await sendEmail("camgadams@gmail.com", message);
   }
