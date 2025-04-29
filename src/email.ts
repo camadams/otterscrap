@@ -3,12 +3,12 @@ dotenv.config({ path: "../.env" });
 import { Resend } from "resend";
 import { AvailabilityItem } from "./Main";
 
-export async function sendEmail(toAddress: string, message: string) {
+export async function sendEmail(toAddress: string[], message: string) {
   const resend = new Resend(process.env.RESEND_API_KEY);
 
   await resend.emails.send({
     from: "Acme <onboarding@resend.dev>",
-    to: [toAddress],
+    to: toAddress,
     subject: "Sanparks Availability Alert",
     html: message,
   });

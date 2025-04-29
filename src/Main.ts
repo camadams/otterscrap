@@ -81,13 +81,13 @@ async function main() {
   if (diffIndices.some((index) => index > 0)) {
     fs.writeFileSync(filePath, availabilityString);
     const message = createMessage(diffIndices, availability);
-    await sendEmail("camgadams@gmail.com", message);
+    await sendEmail(["camgadams@gmail.com"], message);
   }
 }
 
 main().catch(async (err) => {
   const errMessage = `Scraping failed: ${err}`;
   console.error(errMessage);
-  await sendEmail("camgadams@gmail.com", errMessage);
+  await sendEmail(["camgadams@gmail.com"], errMessage);
   process.exit(1);
 });
