@@ -85,7 +85,9 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error("Scraping failed:", err);
+main().catch(async (err) => {
+  const errMessage = `Scraping failed: ${err}`;
+  console.error(errMessage);
+  await sendEmail("camgadams@gmail.com", errMessage);
   process.exit(1);
 });
