@@ -71,18 +71,12 @@ function findDifferenceIndices(
 
 async function main() {
   const availability = await getAvailability();
-  const availabilityString = availability
-    .map((item) => item.available)
-    .join(",");
+  const neww = availability.map((item) => item.available).join(",");
   const filePath = path.join(__dirname, "lastScrap.txt");
-  const lastAvailabilityString = fs.readFileSync(filePath, "utf-8");
-  const diffIndices = findDifferenceIndices(
-    availabilityString,
-    lastAvailabilityString
-  );
-  console.log({ diffIndices });
+  const old = fs.readFileSync(filePath, "utf-8");
+  const diffIndices = findDifferenceIndices(old, neww);
   if (diffIndices.some((index) => index > 0)) {
-    fs.writeFileSync(filePath, availabilityString);
+    fs.writeFileSync(filePath, neww);
     const message = createMessage(diffIndices, availability);
     await sendEmail(["camgadams@gmail.com"], message);
   }
