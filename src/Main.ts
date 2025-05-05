@@ -55,13 +55,15 @@ function findDifferenceIndices(
   oldAvailability: string,
   newAvailability: string
 ): number[] {
-  const oldEl: number[] = oldAvailability.split(",").map(Number);
-  const newEl: number[] = newAvailability.split(",").map(Number);
-
   const diffIndices: number[] = [];
 
-  for (let i = 0; i < oldEl.length; i++) {
-    diffIndices.push(newEl[i] - oldEl[i] > 0 ? newEl[i] - oldEl[i] : 0);
+  let oldArr: number[] = oldAvailability.split(",").map(Number);
+  const newArr: number[] = newAvailability.split(",").map(Number);
+  oldArr = oldArr.slice(oldArr.length - newArr.length);
+
+  for (let i = 0; i < oldArr.length; i++) {
+    let change = newArr[i] - oldArr[i];
+    diffIndices.push(change > 0 ? change : 0);
   }
 
   return diffIndices;
@@ -78,6 +80,7 @@ async function main() {
     availabilityString,
     lastAvailabilityString
   );
+  console.log({ diffIndices });
   if (diffIndices.some((index) => index > 0)) {
     fs.writeFileSync(filePath, availabilityString);
     const message = createMessage(diffIndices, availability);
